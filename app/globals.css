@@ -1,0 +1,199 @@
+'use client';
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { FormEvent, useEffect, useState } from 'react';
+import { getSession, logout, User } from '@/lib/auth';
+import { currencyOptions, defaultRates, exchangeRates, getStoredRates, RateEntry, saveRates } from '@/lib/data';
+
+const defaultForm = {
+  province: 'Kigali City',
+  district: 'Gasabo',
+  item: 'Cement',
+  unit: 'Bag',
+  amount: '12000',
+  notes: '',
+};
+
+export default function AdminPage() {
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [rates, setRates] = useState<RateEntry[]>(defaultRates);
+  const [form, setForm] = useState(defaultForm);
+  const [fxRates, setFxRates] = useState(exchangeRates);
+
+  useEffect(() => {
+    const session = getSession();
+    if (!session || session.role !== 'admin') {
+      router.replace('/login');
+      return;
+    }
+
+    setUser(session);
+    const storedRates = getStoredRates();
+    setRates(storedRates);
+    const storedFx = window.localStorage.getItem('rwunitrate_fx_rates');
+    if (storedFx) {
+      setFxRates(JSON.parse(storedFx));
+    }
+  }, [router]);
+
+  useEffect(() => {
+    saveRates(rates);
+  }, [rates]);
+
+  useEffect(() => {
+    window.localStorage.setItem('rwunitrate_fx_rates', JSON.stringify(fxRates));
+  }, [fxRates]);
+
+  const handleFormChange = (field: string, value: string) => {
+    setForm((current) => ({ ...current, [field]: value }));
+  };
+
+  const handleAddRate = (event: FormEvent) => {
+    event.preventDefault();
+
+    const newEntry: RateEntry = {
+      id: `${Date.now()}`,
+      province: form.province,
+      district: form.district,
+      item: form.item,
+      unit: form.unit,
+      amount: Number(form.amount),
+      notes: form.notes,
+    };
+
+    setRates((current) => [newEntry, ...current]);
+    setForm(defaultForm);
+  };
+
+  const handleDeleteRate = (id: string) => {
+    setRates((current) => current.filter((entry) => entry.id !== id));
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
+
+  if (!user) {
+    return null;
+  }
+
+  return (
+    <main className="admin-shell">
+      <header className="admin-header">
+        <div>
+          <p className="eyebrow">Admin access</p>
+          <h1>RWANDA UNIT RATE ADMIN</h1>
+        </div>
+        <div className="header-actions">
+          <Link href="/dashboard" className="secondary-btn">Back to dashboard</Link>
+          <button type="button" className="secondary-btn" onClick={handleLogout}>Logout</button>
+        </div>
+      </header>
+
+      <section className="admin-grid">
+        <div className="admin-card">
+          <h2>Add rate entry</h2>
+          <form onSubmit={handleAddRate} className="admin-form">
+            <div className="two-col">
+              <label>
+                Province
+                <select value={form.province} onChange={(e) => handleFormChange('province', e.target.value)}>
+                  <option>Kigali City</option>
+                  <option>Northern Province</option>
+                  <option>Southern Province</option>
+                  <option>Western Province</option>
+                  <option>Eastern Province</option>
+                </select>
+              </label>
+              <label>
+                District
+                <input value={form.district} onChange={(e) => handleFormChange('district', e.target.value)} required />
+              </label>
+            </div>
+
+            <div className="two-col">
+              <label>
+                Material / Item
+                <input value={form.item} onChange={(e) => handleFormChange('item', e.target.value)} required />
+              </label>
+              <label>
+                Unit
+                <input value={form.unit} onChange={(e) => handleFormChange('unit', e.target.value)} required />
+              </label>
+            </div>
+
+            <div className="two-col">
+              <label>
+                Amount (RWF)
+                <input type="number" value={form.amount} onChange={(e) => handleFormChange('amount', e.target.value)} required />
+              </label>
+              <label>
+                Notes
+                <input value={form.notes} onChange={(e) => handleFormChange('notes', e.target.value)} />
+              </label>
+            </div>
+
+            <button type="submit" className="primary-btn">Add rate</button>
+          </form>
+        </div>
+
+        <div className="admin-card">
+          <h2>Currency configuration</h2>
+          <div className="currency-list">
+            {currencyOptions.map((currency) => (
+              <label key={currency} className="currency-row">
+                <span>{currency}</span>
+                <input
+                  type="number"
+                  step="0.000001"
+                  value={fxRates[currency]}
+                  onChange={(e) =>
+                    setFxRates((current) => ({
+                      ...current,
+                      [currency]: Number(e.target.value),
+                    }))
+                  }
+                />
+              </label>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="admin-card table-card">
+        <h2>Rate management</h2>
+        <table className="rate-table admin-table">
+          <thead>
+            <tr>
+              <th>Province</th>
+              <th>District</th>
+              <th>Item</th>
+              <th>Unit</th>
+              <th>RWF</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rates.map((entry) => (
+              <tr key={entry.id}>
+                <td>{entry.province}</td>
+                <td>{entry.district}</td>
+                <td>{entry.item}</td>
+                <td>{entry.unit}</td>
+                <td>{entry.amount.toLocaleString()}</td>
+                <td>
+                  <button type="button" className="danger-btn" onClick={() => handleDeleteRate(entry.id)}>
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+    </main>
+  );
+}
