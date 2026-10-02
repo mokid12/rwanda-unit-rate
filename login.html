@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | RWANDA UNIT RATE</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="auth.js" defer></script>
+    <script src="script.js" defer></script>
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar">
+        <a href="index.html" class="logo">RWANDA UNIT RATE</a>
+
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="login.html">Login</a>
+          <a href="signup.html">Sign Up</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="auth-page">
+      <section class="auth-card">
+        <div class="auth-heading">
+          <p class="eyebrow green">Welcome back</p>
+          <h1>Login to your account</h1>
+          <p>Access Rwanda construction pricing and project tools.</p>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="example@email.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required />
+          </div>
+
+          <div class="form-options">
+            <label class="remember-me">
+              <input type="checkbox" name="remember" />
+              <span>Remember me</span>
+            </label>
+
+            <a href="forgot-password.html" class="forgot-password">Forgot password?</a>
+          </div>
+
+          <p id="loginMessage" class="form-message" aria-live="polite"></p>
+
+          <button type="submit" class="form-button">Login</button>
+        </form>
+
+        <p class="auth-footer">
+          Do not have an account?
+          <a href="signup.html">Create an account</a>
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 RWANDA UNIT RATE. All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>
