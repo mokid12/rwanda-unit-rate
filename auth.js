@@ -1,30 +1,50 @@
 /**
  * Authentication System
- * Handles user registration, login, and session management
+ * Handles user registration, login, session management, and password recovery
  * Currently uses localStorage; easily upgradable to backend API
  */
-
-// =============================================
-// User Database (localStorage) - For now
-// Replace with backend API calls when ready
-// =============================================
 
 class AuthSystem {
   constructor() {
     this.storageKey = "rwandaUnitRateUsers";
     this.sessionKey = "rwandaUnitRateSession";
+    this.resetTokenKey = "rwandaUnitRateResetTokens";
     this.initializeStorage();
   }
 
-  // Initialize storage with sample data if empty
+  // Initialize storage with Super Admin account
   initializeStorage() {
-    if (!localStorage.getItem(this.storageKey)) {
-      // Start with empty users array
-      localStorage.setItem(this.storageKey, JSON.stringify([]));
+    let users = JSON.parse(localStorage.getItem(this.storageKey) || "[]");
+    
+    // Check if super admin exists
+    const superAdminEmail = "gatetemoise123@gmail.com";
+    const superAdminExists = users.some((u) => u.email.toLowerCase() === superAdminEmail.toLowerCase());
+
+    if (!superAdminExists) {
+      // Add Super Admin account with correct password
+      users.push({
+        id: "superadmin-001",
+        fullname: "Moise GATETE",
+        email: superAdminEmail,
+        passwordHash: this.hashPassword("Moiseunitrate2026!"),
+        role: "superadmin",
+        isVerified: true,
+        createdAt: new Date().toISOString(),
+      });
+
+      localStorage.setItem(this.storageKey, JSON.stringify(users));
+      console.log("✅ Super Admin account initialized:");
+      console.log("   Email: gatetemoise123@gmail.com");
+      console.log("   Password: Moiseunitrate2026!");
+    }
+
+    // Initialize reset tokens storage if not exists
+    if (!localStorage.getItem(this.resetTokenKey)) {
+      localStorage.setItem(this.resetTokenKey, JSON.stringify([]));
     }
   }
 
-  // Get all users (development only - never expose in production)
+  // Get all users
   getAllUsers() {
     return JSON.parse(localStorage.getItem(this.storageKey) || "[]");
   }
@@ -34,30 +54,160 @@ class AuthSystem {
     localStorage.setItem(this.storageKey, JSON.stringify(users));
   }
 
-  // Hash password (simple version - use bcrypt on backend in production)
+  // Get all reset tokens
+  getResetTokens() {
+    return JSON.parse(localStorage.getItem(this.resetTokenKey) || "[]");
+  }
+
+  // Save reset tokens
+  saveResetTokens(tokens) {
+    localStorage.setItem(this.resetTokenKey, JSON.stringify(tokens));
+  }
+
+  // Hash password
   hashPassword(password) {
     let hash = 0;
     for (let i = 0; i < password.length; i++) {
       const char = password.charCodeAt(i);
       hash = (hash << 5) - hash + char;
-      hash = hash & hash; // Convert to 32bit integer
+      hash = hash & hash;
     }
     return Math.abs(hash).toString(16);
   }
 
+  // Generate unique reset token
+  generateResetToken() {
+    return Math.random().toString(36).substring(2, 15) + 
+           Math.random().toString(36).substring(2, 15) + 
+           Date.now().toString(36);
+  }
+
+  // Request password reset
+  requestPasswordReset(email) {
+    const users = this.getAllUsers();
+    const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+
+    if (!user) {
+      return {
+        success: false,
+        message: "Email not found in our system.",
+      };
+    }
+
+    // Generate reset token
+    const resetToken = this.generateResetToken();
+    const expiryTime = Date.now() + (30 * 60 * 1000); // 30 minutes expiry
+
+    // Store reset token
+    const tokens = this.getResetTokens();
+    tokens.push({
+      token: resetToken,
+      email: user.email,
+      expiryTime: expiryTime,
+      used: false,
+    });
+    this.saveResetTokens(tokens);
+
+    return {
+      success: true,
+      message: "Password reset link sent! Check your email (or use the token below for testing).",
+      resetToken: resetToken, // For development/testing only
+      resetLink: `reset-password.html?token=${resetToken}`,
+    };
+  }
+
+  // Validate reset token
+  validateResetToken(token) {
+    const tokens = this.getResetTokens();
+    const resetData = tokens.find((t) => t.token === token);
+
+    if (!resetData) {
+      return {
+        valid: false,
+        message: "Invalid or expired reset token.",
+      };
+    }
+
+    if (resetData.used) {
+      return {
+        valid: false,
+        message: "This reset token has already been used.",
+      };
+    }
+
+    if (Date.now() > resetData.expiryTime) {
+      return {
+        valid: false,
+        message: "Reset token has expired. Please request a new one.",
+      };
+    }
+
+    return {
+      valid: true,
+      email: resetData.email,
+      message: "Token is valid!",
+    };
+  }
+
+  // Reset password with token
+  resetPasswordWithToken(token, newPassword) {
+    // Validate token
+    const validation = this.validateResetToken(token);
+    if (!validation.valid) {
+      return {
+        success: false,
+        message: validation.message,
+      };
+    }
+
+    // Validate new password
+    if (!newPassword || newPassword.length < 6) {
+      return {
+        success: false,
+        message: "Password must be at least 6 characters long.",
+      };
+    }
+
+    // Update user password
+    const users = this.getAllUsers();
+    const user = users.find((u) => u.email.toLowerCase() === validation.email.toLowerCase());
+
+    if (!user) {
+      return {
+        success: false,
+        message: "User not found.",
+      };
+    }
+
+    // Update password
+    user.passwordHash = this.hashPassword(newPassword);
+    this.saveUsers(users);
+
+    // Mark token as used
+    const tokens = this.getResetTokens();
+    const tokenIndex = tokens.findIndex((t) => t.token === token);
+    if (tokenIndex !== -1) {
+      tokens[tokenIndex].used = true;
+    }
+    this.saveResetTokens(tokens);
+
+    return {
+      success: true,
+      message: "Password reset successfully! You can now login with your new password.",
+    };
+  }
+
   // Register new user
-  register(fullname, email, password) {
+  register(fullname, email, password, role = "user") {
     const users = this.getAllUsers();
 
-    // Check if email already exists
-    if (users.find((user) => user.email === email)) {
+    if (users.find((user) => user.email.toLowerCase() === email.toLowerCase())) {
       return {
         success: false,
         message: "Email already registered. Please login or use a different email.",
       };
     }
 
-    // Validate inputs
     if (!fullname || !email || !password) {
       return {
         success: false,
@@ -79,12 +229,13 @@ class AuthSystem {
       };
     }
 
-    // Create new user
     const newUser = {
-      id: Date.now().toString(), // Simple ID generation
+      id: Date.now().toString(),
       fullname: fullname,
-      email: email,
+      email: email.toLowerCase(),
       passwordHash: this.hashPassword(password),
+      role: role || "user",
+      isVerified: true,
       createdAt: new Date().toISOString(),
     };
 
@@ -101,7 +252,6 @@ class AuthSystem {
   login(email, password) {
     const users = this.getAllUsers();
 
-    // Validate inputs
     if (!email || !password) {
       return {
         success: false,
@@ -116,8 +266,7 @@ class AuthSystem {
       };
     }
 
-    // Find user
-    const user = users.find((u) => u.email === email);
+    const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
 
     if (!user) {
       return {
@@ -126,19 +275,20 @@ class AuthSystem {
       };
     }
 
-    // Verify password
-    if (user.passwordHash !== this.hashPassword(password)) {
+    const inputHash = this.hashPassword(password);
+    
+    if (user.passwordHash !== inputHash) {
       return {
         success: false,
         message: "Incorrect password. Please try again.",
       };
     }
 
-    // Create session
     const session = {
       userId: user.id,
       email: user.email,
       fullname: user.fullname,
+      role: user.role || "user",
       loginTime: new Date().toISOString(),
     };
 
@@ -151,6 +301,7 @@ class AuthSystem {
         id: user.id,
         fullname: user.fullname,
         email: user.email,
+        role: user.role,
       },
     };
   }
@@ -166,6 +317,11 @@ class AuthSystem {
     return this.getSession() !== null;
   }
 
+  // Get current user info
+  getCurrentUser() {
+    return this.getSession();
+  }
+
   // Logout user
   logout() {
     localStorage.removeItem(this.sessionKey);
@@ -175,15 +331,16 @@ class AuthSystem {
     };
   }
 
-  // Get current user info
-  getCurrentUser() {
-    const session = this.getSession();
-    if (!session) {
-      return null;
-    }
+  // Check if user is admin
+  isAdmin() {
+    const user = this.getCurrentUser();
+    return user && (user.role === "superadmin" || user.role === "subadmin");
+  }
 
-    const users = this.getAllUsers();
-    return users.find((user) => user.id === session.userId) || null;
+  // Check if user is super admin
+  isSuperAdmin() {
+    const user = this.getCurrentUser();
+    return user && user.role === "superadmin";
   }
 }
 
@@ -192,7 +349,6 @@ const auth = new AuthSystem();
 
 /**
  * Route Protection Helper
- * Call this on pages that require authentication
  */
 function protectRoute(redirectUrl = "login.html") {
   if (!auth.isLoggedIn()) {
@@ -203,8 +359,25 @@ function protectRoute(redirectUrl = "login.html") {
 }
 
 /**
+ * Admin Route Protection
+ */
+function protectAdminRoute(redirectUrl = "dashboard.html") {
+  if (!auth.isLoggedIn()) {
+    window.location.href = "login.html";
+    return false;
+  }
+
+  if (!auth.isAdmin()) {
+    alert("Access denied. Admin privileges required.");
+    window.location.href = redirectUrl;
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * Update UI with user info
- * Call this to display logged-in user's name in navbar/header
  */
 function updateAuthUI() {
   const user = auth.getCurrentUser();
@@ -212,7 +385,6 @@ function updateAuthUI() {
   const signupLink = document.querySelector('a[href="signup.html"]');
 
   if (user && loginLink && signupLink) {
-    // Replace login/signup with user menu
     loginLink.textContent = `${user.fullname}`;
     loginLink.href = "#";
     loginLink.style.pointerEvents = "none";
