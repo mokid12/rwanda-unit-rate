@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RWANDA UNIT RATE - Construction Pricing</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="auth.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="navbar-container">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">🏗️</span>
+          <span class="logo-text">RWANDA UNIT RATE</span>
+        </a>
+      </div>
+      <div class="navbar-center">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="province.html" class="nav-link">Provinces</a>
+        <a href="currency.html" class="nav-link">Currency</a>
+      </div>
+      <div class="navbar-right">
+        <a href="login.html" class="nav-link outline">Login</a>
+        <a href="signup.html" class="nav-link primary">Sign Up</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">
+          Construction Pricing
+          <span class="gradient-text">Made Simple</span>
+        </h1>
+        <p class="hero-subtitle">
+          Get accurate unit rates for materials and labor across Rwanda's 5 provinces and 30 districts. Plan your construction projects with confidence.
+        </p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary" id="dashboardBtn">📊 Explore Rates</button>
+          <button class="btn btn-secondary" onclick="document.querySelector('.featured-section').scrollIntoView({behavior: 'smooth'})">ℹ️ Learn More</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">120+</span>
+          <span class="stat-label">Materials</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">30</span>
+          <span class="stat-label">Districts</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">5</span>
+          <span class="stat-label">Provinces</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">10+</span>
+          <span class="stat-label">Currencies</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="featured-section">
+    <div class="section-header">
+      <h2 class="section-title">Popular Materials</h2>
+      <p class="section-subtitle">Most requested construction materials across Rwanda</p>
+    </div>
+    <div class="cards-grid">
+      <div class="rate-card">
+        <div class="card-header">🧱</div>
+        <div class="card-content">
+          <h3>Cement</h3>
+          <p class="card-location">Kigali - Kicukiro</p>
+          <p class="card-rate protected-price">9,800 <span class="currency">RWF</span></p>
+          <span class="card-badge">Bag</span>
+        </div>
+        <div class="card-footer">
+          <span class="status-badge approved">Approved</span>
+        </div>
+      </div>
+
+      <div class="rate-card">
+        <div class="card-header">🏜️</div>
+        <div class="card-content">
+          <h3>Sand</h3>
+          <p class="card-location">Southern - Huye</p>
+          <p class="card-rate protected-price">86,000 <span class="currency">RWF</span></p>
+          <span class="card-badge">m³</span>
+        </div>
+        <div class="card-footer">
+          <span class="status-badge approved">Approved</span>
+        </div>
+      </div>
+
+      <div class="rate-card">
+        <div class="card-header">⛏️</div>
+        <div class="card-content">
+          <h3>Stone</h3>
+          <p class="card-location">Western - Rubavu</p>
+          <p class="card-rate protected-price">68,400 <span class="currency">RWF</span></p>
+          <span class="card-badge">m³</span>
+        </div>
+        <div class="card-footer">
+          <span class="status-badge approved">Approved</span>
+        </div>
+      </div>
+
+      <div class="rate-card">
+        <div class="card-header">🔩</div>
+        <div class="card-content">
+          <h3>Steel</h3>
+          <p class="card-location">Northern - Musanze</p>
+          <p class="card-rate protected-price">1,260,000 <span class="currency">RWF</span></p>
+          <span class="card-badge">Ton</span>
+        </div>
+        <div class="card-footer">
+          <span class="status-badge pending">Pending</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="section-header">
+      <h2 class="section-title">Why Choose Us</h2>
+      <p class="section-subtitle">Everything you need for accurate construction budgeting</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon">📍</div>
+        <h3>Regional Data</h3>
+        <p>Accurate pricing across all 5 provinces and 30 districts in Rwanda.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <h3>Real-Time Updates</h3>
+        <p>Rates updated regularly by industry experts and professionals.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💱</div>
+        <h3>Multi-Currency</h3>
+        <p>Convert between 10+ currencies including RWF, USD, and EUR.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <h3>Compare Easily</h3>
+        <p>Filter and compare rates across regions with advanced tools.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📥</div>
+        <h3>Export Reports</h3>
+        <p>Download detailed BOQ and pricing reports for your projects.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <h3>Secure & Reliable</h3>
+        <p>Your data is protected with industry-standard security measures.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="provinces-section">
+    <div class="section-header">
+      <h2 class="section-title">Provinces Coverage</h2>
+      <p class="section-subtitle">Comprehensive rates across all provinces</p>
+    </div>
+    <div class="provinces-grid">
+      <div class="province-card">
+        <div class="province-icon">🏛️</div>
+        <h3>Kigali</h3>
+        <p>Capital city region</p>
+        <span class="province-count">3 Districts</span>
+      </div>
+      <div class="province-card">
+        <div class="province-icon">🌾</div>
+        <h3>Southern</h3>
+        <p>Agricultural heartland</p>
+        <span class="province-count">8 Districts</span>
+      </div>
+      <div class="province-card">
+        <div class="province-icon">⛰️</div>
+        <h3>Western</h3>
+        <p>Mountainous region</p>
+        <span class="province-count">7 Districts</span>
+      </div>
+      <div class="province-card">
+        <div class="province-icon">🏔️</div>
+        <h3>Northern</h3>
+        <p>Highland development</p>
+        <span class="province-count">5 Districts</span>
+      </div>
+      <div class="province-card">
+        <div class="province-icon">🌍</div>
+        <h3>Eastern</h3>
+        <p>Commercial hub</p>
+        <span class="province-count">7 Districts</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="#">Twitter</a>
+          <a href="#">Facebook</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 RWANDA UNIT RATE. All Rights Reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

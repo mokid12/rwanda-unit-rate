@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | RWANDA UNIT RATE</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="auth.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="dashboard-header">
+    <div class="header-left">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🏗️</span>
+        <span class="logo-text">RWANDA UNIT RATE</span>
+      </a>
+    </div>
+    <div class="header-center"></div>
+    <div class="header-right">
+      <div class="user-profile-icon" id="userProfileIcon" title="User menu">👤</div>
+      <div class="user-menu" id="userMenu" style="display: none;">
+        <div class="menu-item">
+          <span id="userEmail">user@example.com</span>
+        </div>
+        <hr class="menu-divider" />
+        <a href="#" class="menu-item" onclick="handleLogout(event)">🚪 Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <h3>Admin Panel</h3>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-tab="overview">📊 Overview</a>
+        <a href="#" class="nav-item" data-tab="unit-rates">📐 Unit Rates</a>
+        <a href="#" class="nav-item" data-tab="provinces">🌍 Provinces</a>
+        <a href="#" class="nav-item" data-tab="districts">📍 Districts</a>
+        <a href="#" class="nav-item" data-tab="currency">💱 Currency</a>
+        <a href="#" class="nav-item" data-tab="users">👥 Users</a>
+      </nav>
+    </aside>
+
+    <main class="dashboard-main">
+      <!-- OVERVIEW TAB -->
+      <section id="overview-tab" class="tab-content active">
+        <div class="section-header">
+          <h1>Admin Overview</h1>
+          <p>System management and statistics</p>
+        </div>
+
+        <div class="summary-cards">
+          <div class="summary-card">
+            <div class="card-icon">⏳</div>
+            <div>
+              <p class="card-label">Pending Entries</p>
+              <h3 class="card-value">18</h3>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="card-icon">✅</div>
+            <div>
+              <p class="card-label">Updated This Week</p>
+              <h3 class="card-value">42</h3>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="card-icon">👥</div>
+            <div>
+              <p class="card-label">Total Users</p>
+              <h3 class="card-value">310</h3>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="card-icon">🌐</div>
+            <div>
+              <p class="card-label">Active Regions</p>
+              <h3 class="card-value">5</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- UNIT RATES TAB -->
+      <section id="unit-rates-tab" class="tab-content">
+        <div class="section-header">
+          <h1>Unit Rates Management</h1>
+          <button class="btn btn-primary" onclick="alert('Add New Rate form coming soon')">+ Add New Rate</button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Province</th>
+                <th>District</th>
+                <th>Material</th>
+                <th>Unit</th>
+                <th>Rate</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Kigali</td>
+                <td>Kicukiro</td>
+                <td>Cement</td>
+                <td>Bag</td>
+                <td>9,800 RWF</td>
+                <td><span class="badge approved">Approved</span></td>
+              </tr>
+              <tr>
+                <td>Western</td>
+                <td>Rubavu</td>
+                <td>Steel</td>
+                <td>Ton</td>
+                <td>1,260,000 RWF</td>
+                <td><span class="badge pending">Pending</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PROVINCES TAB -->
+      <section id="provinces-tab" class="tab-content">
+        <div class="section-header">
+          <h1>Provinces Management</h1>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Province</th>
+                <th>Districts</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Kigali</td>
+                <td>3</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: Kigali')">✏️</button></td>
+              </tr>
+              <tr>
+                <td>Eastern</td>
+                <td>7</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: Eastern')">✏️</button></td>
+              </tr>
+              <tr>
+                <td>Northern</td>
+                <td>5</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: Northern')">✏️</button></td>
+              </tr>
+              <tr>
+                <td>Southern</td>
+                <td>8</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: Southern')">✏️</button></td>
+              </tr>
+              <tr>
+                <td>Western</td>
+                <td>7</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: Western')">✏️</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- DISTRICTS TAB -->
+      <section id="districts-tab" class="tab-content">
+        <div class="section-header">
+          <h1>Districts Management</h1>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>District</th>
+                <th>Province</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Gasabo</td>
+                <td>Kigali</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: Gasabo')">✏️</button></td>
+              </tr>
+              <tr>
+                <td>Kicukiro</td>
+                <td>Kigali</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: Kicukiro')">✏️</button></td>
+              </tr>
+              <tr>
+                <td>Nyarugenge</td>
+                <td>Kigali</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: Nyarugenge')">✏️</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CURRENCY TAB -->
+      <section id="currency-tab" class="tab-content">
+        <div class="section-header">
+          <h1>Currency Management</h1>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Currency</th>
+                <th>Code</th>
+                <th>Rate to RWF</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>US Dollar</td>
+                <td>USD</td>
+                <td>1,260</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: USD')">✏️</button></td>
+              </tr>
+              <tr>
+                <td>Euro</td>
+                <td>EUR</td>
+                <td>1,370</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: EUR')">✏️</button></td>
+              </tr>
+              <tr>
+                <td>British Pound</td>
+                <td>GBP</td>
+                <td>1,560</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('Edit: GBP')">✏️</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- USERS TAB -->
+      <section id="users-tab" class="tab-content">
+        <div class="section-header">
+          <h1>Users Management</h1>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Moise GATETE</td>
+                <td>gatetemoise123@gmail.com</td>
+                <td>Super Admin</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('View: Moise')">👁️</button></td>
+              </tr>
+              <tr>
+                <td>John Doe</td>
+                <td>john@example.com</td>
+                <td>User</td>
+                <td><span class="badge approved">Active</span></td>
+                <td><button class="btn-small" onclick="alert('View: John')">👁️</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026 RWANDA UNIT RATE. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    if (!auth.isLoggedIn()) {
+      window.location.href = 'login.html';
+    }
+    if (!auth.isSuperAdmin()) {
+      alert('Access denied. Super Admin privileges required.');
+      window.location.href = 'dashboard.html';
+    }
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tabName = item.dataset.tab;
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        document.getElementById(tabName + '-tab').classList.add('active');
+        item.classList.add('active');
+      });
+    });
+
+    document.getElementById('userProfileIcon').addEventListener('click', function() {
+      const menu = document.getElementById('userMenu');
+      menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    });
+  </script>
+</body>
+</html>

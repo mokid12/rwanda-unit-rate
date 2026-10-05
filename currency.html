@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Converter | RWANDA UNIT RATE</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="auth.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="navbar-container">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">🏗️</span>
+          <span class="logo-text">RWANDA UNIT RATE</span>
+        </a>
+      </div>
+      <div class="navbar-center">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="province.html" class="nav-link">Provinces</a>
+        <a href="currency.html" class="nav-link active">Currency</a>
+      </div>
+      <div class="navbar-right">
+        <a href="login.html" class="nav-link outline">Login</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="currency-page">
+    <section class="converter-box">
+      <div class="converter-header">
+        <p class="eyebrow">Finance</p>
+        <h1>Currency Conversion</h1>
+      </div>
+
+      <form id="currencyForm" class="converter-form">
+        <div class="field">
+          <label for="amount">Amount</label>
+          <input type="number" id="amount" value="10" min="0" />
+        </div>
+
+        <div class="field">
+          <label for="from">From</label>
+          <select id="from">
+            <option value="RWF">RWF</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="KSH">KSH</option>
+            <option value="UGX">UGX</option>
+            <option value="TZS">TZS</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="to">To</label>
+          <select id="to">
+            <option value="RWF">RWF</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="KSH">KSH</option>
+            <option value="UGX">UGX</option>
+            <option value="TZS">TZS</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Convert</button>
+      </form>
+
+      <div class="result-box">
+        <p>Converted Amount</p>
+        <h2 id="resultText">14 USD</h2>
+      </div>
+    </section>
+
+    <section class="rates-panel">
+      <h3>Live Reference Rates</h3>
+      <div class="rate-grid">
+        <div class="rate-card">
+          <span>USD</span>
+          <strong>1 USD = 1,260 RWF</strong>
+        </div>
+        <div class="rate-card">
+          <span>EUR</span>
+          <strong>1 EUR = 1,370 RWF</strong>
+        </div>
+        <div class="rate-card">
+          <span>GBP</span>
+          <strong>1 GBP = 1,560 RWF</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026 RWANDA UNIT RATE. All Rights Reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

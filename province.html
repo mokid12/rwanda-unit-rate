@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Provinces | RWANDA UNIT RATE</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="auth.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="navbar-container">
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">🏗️</span>
+          <span class="logo-text">RWANDA UNIT RATE</span>
+        </a>
+      </div>
+      <div class="navbar-center">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="province.html" class="nav-link active">Provinces</a>
+        <a href="currency.html" class="nav-link">Currency</a>
+      </div>
+      <div class="navbar-right">
+        <a href="login.html" class="nav-link outline">Login</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="province-page">
+    <section class="page-header">
+      <div>
+        <p class="eyebrow">Search by region</p>
+        <h1>Province and District Rates</h1>
+      </div>
+      <button class="btn btn-primary" type="button">📥 Download PDF</button>
+    </section>
+
+    <section class="filters-panel">
+      <div class="filter-group">
+        <label for="provinceFilter">Province</label>
+        <select id="provinceFilter" name="provinceFilter">
+          <option value="all">All Provinces</option>
+          <option value="kigali">Kigali</option>
+          <option value="eastern">Eastern</option>
+          <option value="northern">Northern</option>
+          <option value="southern">Southern</option>
+          <option value="western">Western</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="materialFilter">Material</label>
+        <select id="materialFilter" name="materialFilter">
+          <option value="all">All Materials</option>
+          <option value="cement">Cement</option>
+          <option value="sand">Sand</option>
+          <option value="stone">Stone</option>
+          <option value="steel">Steel</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="searchInput">Search</label>
+        <input type="text" id="searchInput" placeholder="Search material or province" />
+      </div>
+    </section>
+
+    <section class="results-summary">
+      <div class="summary-card">
+        <span>Average rate</span>
+        <strong>84,500 RWF</strong>
+      </div>
+      <div class="summary-card">
+        <span>Latest update</span>
+        <strong>Today</strong>
+      </div>
+      <div class="summary-card">
+        <span>Regions active</span>
+        <strong>5</strong>
+      </div>
+    </section>
+
+    <section class="table-panel">
+      <h3>Unit Rate Records</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Province</th>
+              <th>Material</th>
+              <th>Unit</th>
+              <th>Rate</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody id="rateTableBody">
+            <tr data-province="kigali" data-material="cement">
+              <td>Kigali</td>
+              <td>Cement</td>
+              <td>Bag</td>
+              <td>9,800 RWF</td>
+              <td>2026-07-14</td>
+            </tr>
+            <tr data-province="southern" data-material="sand">
+              <td>Southern</td>
+              <td>Sand</td>
+              <td>m³</td>
+              <td>72,500 RWF</td>
+              <td>2026-07-13</td>
+            </tr>
+            <tr data-province="western" data-material="stone">
+              <td>Western</td>
+              <td>Stone</td>
+              <td>m³</td>
+              <td>68,400 RWF</td>
+              <td>2026-07-12</td>
+            </tr>
+            <tr data-province="northern" data-material="steel">
+              <td>Northern</td>
+              <td>Steel</td>
+              <td>Ton</td>
+              <td>1,260,000 RWF</td>
+              <td>2026-07-11</td>
+            </tr>
+            <tr data-province="eastern" data-material="sand">
+              <td>Eastern</td>
+              <td>Sand</td>
+              <td>m³</td>
+              <td>80,000 RWF</td>
+              <td>2026-07-10</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026 RWANDA UNIT RATE. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const provinceFilter = document.getElementById('provinceFilter');
+    const materialFilter = document.getElementById('materialFilter');
+    const searchInput = document.getElementById('searchInput');
+    const tableRows = document.querySelectorAll('#rateTableBody tr');
+
+    function applyFilters() {
+      const province = provinceFilter.value;
+      const material = materialFilter.value;
+      const search = searchInput.value.toLowerCase();
+
+      tableRows.forEach(row => {
+        const rowProvince = row.dataset.province;
+        const rowMaterial = row.dataset.material;
+        const rowText = row.textContent.toLowerCase();
+
+        const matchProvince = province === 'all' || rowProvince === province;
+        const matchMaterial = material === 'all' || rowMaterial === material;
+        const matchSearch = !search || rowText.includes(search);
+
+        row.style.display = matchProvince && matchMaterial && matchSearch ? '' : 'none';
+      });
+    }
+
+    provinceFilter.addEventListener('change', applyFilters);
+    materialFilter.addEventListener('change', applyFilters);
+    searchInput.addEventListener('input', applyFilters);
+  </script>
+</body>
+</html>
